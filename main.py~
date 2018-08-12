@@ -1,0 +1,18 @@
+from flask import Flask
+from firebase import firebase
+app = Flask(__name__)
+thread = None
+
+firebase = firebase.FirebaseApplication('https://smartcanine-c15e7.firebaseio.com/',None)
+
+
+
+@app.route("/")
+def backgound_thread():
+	count = 0
+	firebase.patch('/test', {'test': count})
+	count+=1
+	return "Hello"
+
+if __name__ == "__main__":
+	app.run(host='192.168.43.14', port=4000, debug=True)
