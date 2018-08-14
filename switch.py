@@ -4,7 +4,7 @@ import requests
 import os
 from gtts import gTTS
 
-SWITCH=14
+SWITCH=20
 SWITCH2=16
 SERVO=18
 status=3.5
@@ -52,7 +52,7 @@ try:
 				status=11.5
 				SERVO_PWM.ChangeDutyCycle(status)
 				time.sleep(2)
-			if (status==11.5):
+			elif (status==11.5):
 				print "11.5"
 				status=3.5
 				SERVO_PWM.ChangeDutyCycle(status)
