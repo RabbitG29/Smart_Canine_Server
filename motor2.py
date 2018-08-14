@@ -50,7 +50,7 @@ StepCount = StepCount2
 Count = 0
 
 # Start main loop
-while Count<4080:
+while Count<455:
 	for pin in range(0, 4):
 		xpin = StepPins[pin]
 		if Seq2[StepCounter][pin]!=0:
