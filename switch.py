@@ -1,8 +1,31 @@
+#-*- coding: utf-8 -*-
 import RPi.GPIO as GPIO
 import time
 import requests
 import os
+import speech_recognition as sr
 from gtts import gTTS
+
+sample_rate = 48000
+chunk_size = 2048
+
+Count = 0
+
+r = sr.Recognizer()
+with sr.Microphone(device_index=2, sample_rate = sample_rate, chunk_size = chunk_size) as source:
+	print("말해보세요")
+	audio = r.listen(source)
+
+try:
+	voice = r.recognize_google(audio, language='ko-KR')
+	print(voice)
+
+except sr.UnknownValueError:
+	print("No!!!")
+except sr.RequestError as e:
+	print(e)
+
+
 
 SWITCH=20
 SWITCH2=16
@@ -40,7 +63,36 @@ Seq2[7] = [1,0,0,1]
 
 Seq = Seq2
 StepCount = StepCount2
-Count = 0
+
+if(voice== u"약 주세요"):
+	print('SWITCH is High. Pressed')
+	os.system("mpg321 -o alsa medic.mp3")
+	while Count<455:
+		for pin in range(0, 4):
+			xpin = StepPins[pin]
+			if Seq2[StepCounter][pin]!=0:
+				print " Step %i Enable %i" %(StepCounter,xpin)
+				GPIO.output(xpin, True)
+			else:
+        			GPIO.output(xpin, False)
+		StepCounter += 1
+				 # If we reach the end of the sequence
+					# start again
+		if (StepCounter==StepCount):
+  			StepCounter = 0
+		if (StepCounter<0):
+			StepCounter = StepCount
+		  # Wait before moving on
+		Count += 1
+		time.sleep(WaitTime)
+		if (StepCounter==StepCount):
+			 StepCounter = 0
+		if (StepCounter<0):
+			 StepCounter = StepCount
+	Count=0
+
+
+
 
 try:
 

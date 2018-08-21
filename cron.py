@@ -2,7 +2,8 @@ from uuid import getnode as get_mac
 from firebase import firebase
 import datetime
 import json
-import crython
+import time
+from threading import *
 # GET MAC ADDRESS
 def getMac():
     mac = get_mac()
@@ -55,4 +56,10 @@ def StabStatus():
         r = f.patch('/devices/'+mac, {'timestamp': str(datetime.datetime.now())})
         print(r)
 
-StabStatus()
+def cron():
+    while(True):
+        StabStatus()
+        time.sleep(5)
+        
+t = Timer(5.0, cron)
+t.start()
