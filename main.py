@@ -1,3 +1,4 @@
+#-*- coding: utf-8 -*-
 from flask import Flask, request
 from flask_apscheduler import APScheduler
 
@@ -81,9 +82,16 @@ class Config(object):
 @app.route("/", methods = ['POST'])
 def backgound_thread():
     if request.method == 'POST':
+	print("Hi")
         user = request.form['test']
         print(user)
-        firebase.patch('userlog', {'test': user})
+	result = firebase.get('/devices/0A:00:27:00:00:17/currentPos', None, params={'shallow': 'true'})
+	result2 = int(result);
+	result2+=1;
+	if(result2==9):
+		result2=0;
+	print(str(result2))
+        firebase.patch('/devices/0A:00:27:00:00:17/', {'currentPos': result2})
 
 	return "Hello"
 

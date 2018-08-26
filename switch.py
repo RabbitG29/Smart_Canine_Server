@@ -96,7 +96,7 @@ try:
 
 					 StepCounter = StepCount
 			Count=0
-#			r = requests.post("http://192.168.43.14:4000/", data={'test':'press'})
+			r = requests.post("http://localhost:4000", data={'test':'press'})
 			print('Tongisin')
 		else :
 			print('SWITCH is Low')
