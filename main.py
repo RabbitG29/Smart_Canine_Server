@@ -83,7 +83,9 @@ def backgound_thread():
         firebase.patch('/devices/0A:00:27:00:00:17/', {'currentPos': result2})
 
 	return "Hello"
+
 def start():
 	app.run(host='localhost', port=4000, debug=True)
+	
 if __name__ == "__main__":
 	start()
