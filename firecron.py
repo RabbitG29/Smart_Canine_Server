@@ -60,6 +60,9 @@ def cron():
     while(True):
         StabStatus()
         time.sleep(5)
-        
-t = Timer(5.0, cron)
-t.start()
+def start():
+    t = Timer(5.0, cron)
+    t.start()
+
+if __name__ == '__main__':
+    start()

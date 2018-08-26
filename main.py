@@ -1,6 +1,5 @@
 #-*- coding: utf-8 -*-
 from flask import Flask, request
-from flask_apscheduler import APScheduler
 
 from uuid import getnode as get_mac
 from firebase import firebase
@@ -68,16 +67,6 @@ def StabStatus():
         r = firebase.patch('/devices/'+mac, {'timestamp': str(datetime.datetime.now())})
         print(r)
 
-class Config(object):
-    JOBS = [
-        {
-            'id': 'stabstatus',
-            'func': 'main:StabStatus',
-            'trigger': 'interval',
-            'seconds': 5       
-        }
-    ]
-    SCHEDULER_API_ENABLED = True
 
 @app.route("/", methods = ['POST'])
 def backgound_thread():
@@ -94,10 +83,7 @@ def backgound_thread():
         firebase.patch('/devices/0A:00:27:00:00:17/', {'currentPos': result2})
 
 	return "Hello"
-
+def start():
+	app.run(host='localhost', port=4000, debug=True)
 if __name__ == "__main__":
-    app.config.from_object(Config())
-    scheduler = APScheduler()
-    scheduler.init_app(app)
-    scheduler.start()
-    app.run(host='localhost', port=4000, debug=True)
+	start()
