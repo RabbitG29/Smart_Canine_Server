@@ -100,7 +100,7 @@ def start():
 				Count=0
 				r = requests.post("http://localhost:4000", data={'test':'press'})
 				print('Tongisin')
-			else :
+	#		else :
 	#			print('SWITCH is Low')
 			time.sleep(0.1)
 					
