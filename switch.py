@@ -99,7 +99,7 @@ try:
 			r = requests.post("http://localhost:4000", data={'test':'press'})
 			print('Tongisin')
 		else :
-			print('SWITCH is Low')
+#			print('SWITCH is Low')
 		time.sleep(0.1)
 				
 
