@@ -10,6 +10,7 @@ def start():
 
 	sample_rate = 48000
 	chunk_size = 2048
+
 	Count = 0
 	SERVO=18
 	status=3.5
@@ -48,23 +49,34 @@ def start():
 
 	while(1):
 		r = sr.Recognizer()
-		r.energy_threshold = 4000
-		r.non_speaking_duration = 0.2
-		r.pause_threshold = 0.2
 		with sr.Microphone(device_index=2, sample_rate = sample_rate, chunk_size = chunk_size) as source:
-			print("talk2")
-			audio = r.listen(source)
+			print("talk")
+			audio1 = r.listen(source)
 		try:
-			voice = r.recognize_google(audio, language='ko-KR')
-			print(voice)
+			voice1 = r.recognize_google(audio1, language='ko-KR')
+			print(voice1)
 		except sr.UnknownValueError:
 			print("No!!")
 			continue;
 		except sr.RequestError as e:
 			print(e)
+		if(voice1!=u"헤이"):
+			continue
+
+		if(voice1==u"헤이"):
+			with sr.Microphone(device_index=2, sample_rate = sample_rate, chunk_size = chunk_size) as source:
+				os.system("mpg321 -o alsa medicine.mp3")
+				audio = r.listen(source)
+			try:
+				voice = r.recognize_google(audio, language='ko-KR')
+				print(voice)
+			except sr.UnknownValueError:
+				print("No!!")
+			except sr.RequestError as e:
+				print(e)
 
 
-		if((voice.find( u"약 주세요")!=-1)and(voice.find(u"헤이")!=-1)):
+		if(voice.find( u"약 주세요")!=-1):
 			print('SWITCH is High. Pressed')
 			os.system("mpg321 -o alsa medic.mp3")
 			while Count<455:
@@ -75,13 +87,13 @@ def start():
 						GPIO.output(xpin, True)
 					else:
 						GPIO.output(xpin, False)
-				StepCounter += 1
+					StepCounter += 1
 					# If we reach the end of the sequence
 						# start again
-				if (StepCounter==StepCount):
-					StepCounter = 0
-				if (StepCounter<0):
-					StepCounter = StepCount
+					if (StepCounter==StepCount):
+						StepCounter = 0
+					if (StepCounter<0):
+						StepCounter = StepCount
 	# Wait	 before moving on
 				Count += 1
 				time.sleep(WaitTime)
@@ -90,20 +102,17 @@ def start():
 				if (StepCounter<0):
 					StepCounter = StepCount
 			Count=0
-			r = requests.post("http://localhost:4000", data={'test':'press'})
-			print('Tongsin')
-			
-		elif((voice.find(u"물 주세요")!=-1)and(voice.find(u"헤이")!=-1)):
-			print "water"
-			os.system("mpg321 -o alsa water.mp3")
-			print "11.5"
-		   	status=3.5
-			SERVO_PWM.ChangeDutyCycle(status)
-			time.sleep(3)
-			print "3.5"
-			status=11.5
-			SERVO_PWM.ChangeDutyCycle(status)
-			time.sleep(2)
+		elif(voice.find(u"물 주세요")!=-1):
+		   print "water"
+		   os.system("mpg321 -o alsa water.mp3")
+		   print "11.5"
+		   status=3.5
+		   SERVO_PWM.ChangeDutyCycle(status)
+		   time.sleep(3)
+		   print "3.5"
+		   status=11.5
+		   SWERVO_PWM.ChangeDutyCycle(status)
+		   time.sleep(2)
 
 if __name__ == '__main__':
 	start()

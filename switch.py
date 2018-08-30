@@ -28,7 +28,7 @@ def start():
 	SERVO_PWM.start(0)
 	for pin in StepPins:
 		print "Setup pins"
-			GPIO.setup(pin,GPIO.OUT)
+		GPIO.setup(pin,GPIO.OUT)
 		GPIO.output(pin, False)
 
 
@@ -55,17 +55,15 @@ def start():
 		while (1):
 			if GPIO.input(SWITCH2)==GPIO.HIGH:
 				print "Switch2 Press"
-				if (status==3.5):
-					os.system("mpg321 -o alsa water.mp3")
-					print "3.5"
-					status=11.5
-					SERVO_PWM.ChangeDutyCycle(status)
-					time.sleep(2)
-				elif (status==11.5):
-					print "11.5"
-					status=3.5
-					SERVO_PWM.ChangeDutyCycle(status)
-					time.sleep(2)
+				os.system("mpg321 -o alsa water.mp3")
+				print "11.5"
+				status=3.5
+				SERVO_PWM.ChangeDutyCycle(status)
+				time.sleep(3)
+				print "3.5"
+				status=11.5
+				SERVO_PWM.ChangeDutyCycle(status)
+				time.sleep(2)
 
 			if GPIO.input(SWITCH)==GPIO.HIGH:
 				print('SWITCH is High. Pressed')
@@ -78,8 +76,8 @@ def start():
 						if Seq2[StepCounter][pin]!=0:
 							print " Step %i Enable %i" %(StepCounter,xpin)
 							GPIO.output(xpin, True)
-							else:
-								GPIO.output(xpin, False)
+						else:
+							GPIO.output(xpin, False)
 					StepCounter += 1
 					# If we reach the end of the sequence
 						# start again
@@ -102,8 +100,8 @@ def start():
 				print('Tongisin')
 	#		else :
 	#			print('SWITCH is Low')
+#			GPIO.cleanup()
 			time.sleep(0.1)
-					
 
 
 	except KeyboardInterrupt, e:
